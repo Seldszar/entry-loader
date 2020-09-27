@@ -139,7 +139,7 @@ class EntryPlugin {
 				data = data(entry);
 			}
 
-			return format(entry, {data, template});
+			return format(entry, data ? {data, template} : {template});
 		}
 
 		if (Array.isArray(entry)) {
