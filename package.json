@@ -1,0 +1,52 @@
+{
+  "name": "@seldszar/yael",
+  "version": "0.0.0-development",
+  "description": "Yet another entry loader for Webpack",
+  "author": "Alexandre Breteau <contact@seldszar.fr> (https://seldszar.fr)",
+  "homepage": "https://github.com/seldszar/yael#readme",
+  "repository": "seldszar/yael",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seldszar/yael/issues"
+  },
+  "scripts": {
+    "test": "xo"
+  },
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "keywords": [
+    "entry",
+    "loader",
+    "webpack"
+  ],
+  "dependencies": {
+    "loader-utils": "^2.0.0",
+    "schema-utils": "^2.7.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "xo": "^0.33.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "xo --fix"
+  }
+}
