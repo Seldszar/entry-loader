@@ -6,11 +6,6 @@ export interface EntryLoaderOptions {
 	 * Path to the template file.
 	 */
 	template: string;
-
-	/**
-	 * Additional data transmitted to the template.
-	 */
-	data?: Record<string, any> | ((entry: string) => Record<string, any>);
 }
 
 /**
@@ -45,11 +40,6 @@ export interface EntryContext {
 	 * The Webpack target.
 	 */
 	target: string;
-
-	/**
-	 * Additional data transmitted by the loader.
-	 */
-	data?: Record<string, any>;
 }
 
 /**

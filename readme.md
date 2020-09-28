@@ -36,10 +36,7 @@ module.exports = {
 		new VueLoaderPlugin(),
 		new EntryPlugin({
 			test: /\.vue$/,
-			template: './entry-template.js',
-			data: {
-				message: 'Hello World'
-			}
+			template: './entry-template.js'
 		})
 	]
 };
@@ -50,8 +47,10 @@ In the `entry-template.js` file, export a function taking the original entry & t
 ```javascript
 import { createApp } from 'vue';
 
-export default (App, { data, target }) => {
-	const app = createApp(App, data);
+export default (App, { target }) => {
+	const app = createApp(App, {
+		message: 'Hello World'
+	});
 
 	if (target === 'web') {
 		app.mount('#app');

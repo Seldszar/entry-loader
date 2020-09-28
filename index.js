@@ -7,9 +7,6 @@ const loaderSchema = {
 	additionalProperties: false,
 	type: 'object',
 	properties: {
-		data: {
-			type: 'object'
-		},
 		template: {
 			type: 'string'
 		}
@@ -29,8 +26,7 @@ function loader() {
 
 	const templatePath = path.resolve(this.rootContext, options.template);
 	const templateContext = {
-		target: this.target,
-		data: options.data
+		target: this.target
 	};
 
 	return `
@@ -41,8 +37,8 @@ function loader() {
 	`;
 }
 
-function format(entry, context) {
-	return `@seldszar/yael?${querystring.stringify(context)}!${entry}`;
+function format(entry, options) {
+	return `${__filename}?${querystring.stringify(options)}!${entry}`;
 }
 
 const pluginSchema = {
@@ -63,16 +59,6 @@ const pluginSchema = {
 	additionalProperties: false,
 	type: 'object',
 	properties: {
-		data: {
-			oneOf: [
-				{
-					type: 'object'
-				},
-				{
-					instanceof: 'Function'
-				}
-			]
-		},
 		template: {
 			type: 'string'
 		},
@@ -133,13 +119,9 @@ class EntryPlugin {
 
 	updateEntry(entry) {
 		if (typeof entry === 'string' && this.testEntry(entry)) {
-			let {data, template} = this.options;
-
-			if (typeof data === 'function') {
-				data = data(entry);
-			}
-
-			return format(entry, data ? {data, template} : {template});
+			return format(entry, {
+				template: this.options.template
+			});
 		}
 
 		if (Array.isArray(entry)) {
