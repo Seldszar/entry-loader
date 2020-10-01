@@ -18,12 +18,22 @@ $ npm install @seldszar/yael
 
 # Usage
 
-Register the plugin in you Webpack configuration and set the `template` to the entry template file:
+Let's consider the following project structure using Vue.js:
+
+```
+src/
+├── template.js
+└── app.vue
+```
+
+Register the plugin in your Webpack configuration and set the `template` path:
 
 ```javascript
 const { EntryPlugin } = require('@seldszar/yael');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
+	entry: './src/app.vue',
 	module: {
 		rules: [
 			{
@@ -35,14 +45,13 @@ module.exports = {
 	plugins: [
 		new VueLoaderPlugin(),
 		new EntryPlugin({
-			test: /\.vue$/,
-			template: './entry-template.js'
+			template: './src/template.js'
 		})
 	]
 };
 ```
 
-In the `entry-template.js` file, export a function taking the original entry & the context as arguments:
+In `src/template.js`, export a function taking the original entry & the context as arguments:
 
 ```javascript
 import { createApp } from 'vue';
@@ -59,6 +68,8 @@ export default (App, { target }) => {
 	return app;
 };
 ```
+
+Webpack will generate a `dist/main.js` file, exporting `app` and mounting it because the current target is `web` by default.
 
 ## API
 
