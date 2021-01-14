@@ -1,7 +1,7 @@
 /**
- * Entry loader options.
+ * Entry wrapper options.
  */
-export interface EntryLoaderOptions {
+export interface EntryWrapperOptions {
 	/**
 	 * Path to the template file.
 	 */
@@ -9,16 +9,16 @@ export interface EntryLoaderOptions {
 }
 
 /**
- * Format an entry using the template entry loader.
+ * Wraps an entry to use the loader.
  * @param entry path to the entry file
- * @param options entry loader options
+ * @param options entry wrapper options
  */
-export function format(entry: string, options: EntryLoaderOptions): string;
+export function wrapEntry(entry: string, options: EntryWrapperOptions): string;
 
 /**
- * Entry plugin options.
+ * Entry wrapper plugin options.
  */
-export interface EntryPluginOptions extends EntryLoaderOptions {
+export interface EntryWrapperPluginOptions extends EntryWrapperOptions {
 	/**
 	 * Patterns to filter entry files applying the loader.
 	 */
@@ -26,16 +26,16 @@ export interface EntryPluginOptions extends EntryLoaderOptions {
 }
 
 /**
- * Entry plugin.
+ * Entry wrapper plugin.
  */
-export type EntryPlugin = {
-	new (options: EntryPluginOptions);
+export type EntryWrapperPlugin = {
+	new (options: EntryWrapperPluginOptions);
 };
 
 /**
- * Entry context.
+ * Entry wrapper context.
  */
-export interface EntryContext {
+export interface EntryWrapperContext {
 	/**
 	 * The Webpack target.
 	 */
@@ -43,8 +43,8 @@ export interface EntryContext {
 }
 
 /**
- * Entry handler.
- * @param entry path to the entry file
+ * Entry wrapper.
+ * @param input original entry
  * @param context entry context
  */
-export type EntryHandler<T = any, V = any> = (entry: T, context: EntryContext) => V;
+export type EntryWrapper<T = any, V = any> = (input: T, context: EntryWrapperContext) => V;

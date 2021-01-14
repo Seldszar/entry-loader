@@ -1,6 +1,6 @@
 # @seldszar/yael
 
-> Yet another entry loader for Webpack
+> Yet another entry wrapper for Webpack
 
 ## Table of Contents
 
@@ -22,14 +22,13 @@ Let's consider the following project structure using Vue.js:
 
 ```
 src/
-├── template.js
+├── entry-template.js
 └── app.vue
 ```
 
-Register the plugin in your Webpack configuration and set the `template` path:
+Here's the `webpack.config.js` configuration:
 
 ```javascript
-const { EntryPlugin } = require('@seldszar/yael');
 const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
@@ -43,15 +42,12 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new VueLoaderPlugin(),
-		new EntryPlugin({
-			template: './src/template.js'
-		})
+		new VueLoaderPlugin()
 	]
 };
 ```
 
-In `src/template.js`, export a function taking the original entry & the context as arguments:
+In `src/entry-template.js`, export a function taking the original entry & the context as arguments:
 
 ```javascript
 import { createApp } from 'vue';
@@ -69,7 +65,38 @@ export default (App, { target }) => {
 };
 ```
 
-Webpack will generate a `dist/main.js` file, exporting `app` and mounting it because the current target is `web` by default.
+## Using the wrapper
+
+If you prefer a more granular approach, you can manually apply with `wrapEntry`:
+
+```javascript
+const { wrapEntry } = require('@seldszar/yael');
+
+module.exports = {
+	entry: wrapEntry('./src/app.vue', {
+		template: './src/entry-template.js'
+	}),
+	// ...
+};
+```
+
+## Using the plugin
+
+Register the plugin in your Webpack configuration and set the `template` path:
+
+```javascript
+const { EntryWrapperPlugin } = require('@seldszar/yael');
+
+module.exports = {
+	// ...
+	plugins: [
+		// ...
+		new EntryWrapperPlugin({
+			template: './src/entry-template.js'
+		})
+	]
+};
+```
 
 ## API
 

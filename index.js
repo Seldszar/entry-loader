@@ -21,7 +21,7 @@ function loader() {
 
 	validateOptions(loaderSchema, options, {
 		baseDataPath: 'options',
-		name: 'Entry Loader'
+		name: 'Entry Wrapper Loader'
 	});
 
 	const templatePath = path.resolve(this.rootContext, options.template);
@@ -37,7 +37,7 @@ function loader() {
 	`;
 }
 
-function format(entry, options) {
+function wrapEntry(entry, options) {
 	return `${__filename}?${querystring.stringify(options)}!${entry}`;
 }
 
@@ -85,11 +85,11 @@ const pluginSchema = {
 	]
 };
 
-class EntryPlugin {
+class EntryWrapperPlugin {
 	constructor(options) {
 		validateOptions(pluginSchema, options, {
 			baseDataPath: 'options',
-			name: 'Entry Plugin'
+			name: 'Entry Wrapper Plugin'
 		});
 
 		this.options = options;
@@ -119,7 +119,7 @@ class EntryPlugin {
 
 	updateEntry(entry) {
 		if (typeof entry === 'string' && this.testEntry(entry)) {
-			return format(entry, {
+			return wrapEntry(entry, {
 				template: this.options.template
 			});
 		}
@@ -140,6 +140,7 @@ class EntryPlugin {
 	}
 }
 
+loader.wrapEntry = wrapEntry;
+loader.EntryWrapperPlugin = EntryWrapperPlugin;
+
 module.exports = loader;
-module.exports.format = format;
-module.exports.EntryPlugin = EntryPlugin;
