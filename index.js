@@ -60,7 +60,15 @@ const pluginSchema = {
 	type: 'object',
 	properties: {
 		template: {
-			type: 'string'
+			oneOf: [
+				{
+					instanceof: 'Function',
+					tsType: 'Function'
+				},
+				{
+					type: 'string'
+				}
+			]
 		},
 		test: {
 			oneOf: [
@@ -95,13 +103,15 @@ class EntryWrapperPlugin {
 		this.options = options;
 	}
 
-	apply({options}) {
-		const {entry} = options;
+	apply(compiler) {
+		const {
+			options: {entry}
+		} = compiler;
 
-		options.entry =
+		compiler.options.entry =
 			typeof entry === 'function' ?
-				async () => this.updateEntry(await entry()) :
-				this.updateEntry(entry);
+				async () => this.updateEntry(compiler, await entry()) :
+				this.updateEntry(compiler, entry);
 	}
 
 	testEntry(entry) {
@@ -117,11 +127,15 @@ class EntryWrapperPlugin {
 			testPattern(this.options.test);
 	}
 
-	updateEntry(entry) {
+	updateEntry(compiler, entry) {
 		if (typeof entry === 'string' && this.testEntry(entry)) {
-			return wrapEntry(entry, {
-				template: this.options.template
-			});
+			let {template} = this.options;
+
+			if (typeof template === 'function') {
+				template = template(compiler);
+			}
+
+			return wrapEntry(entry, {template});
 		}
 
 		if (Array.isArray(entry)) {

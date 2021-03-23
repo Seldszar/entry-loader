@@ -20,7 +20,12 @@ export function wrapEntry(entry: string, options: EntryWrapperOptions): string;
 /**
  * Entry wrapper plugin options.
  */
-export interface EntryWrapperPluginOptions extends EntryWrapperOptions {
+export interface EntryWrapperPluginOptions {
+	/**
+	 * Path to the template file.
+	 */
+	template: string | ((compiler: Compiler) => string);
+
 	/**
 	 * Patterns to filter entry files applying the loader.
 	 */
