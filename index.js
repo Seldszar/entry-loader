@@ -1,13 +1,16 @@
 const loaderUtils = require('loader-utils');
 const path = require('path');
 const querystring = require('querystring');
-const validateOptions = require('schema-utils');
+const schemaUtils = require('schema-utils');
 
 const loaderSchema = {
 	additionalProperties: false,
 	type: 'object',
 	properties: {
 		template: {
+			type: 'string'
+		},
+		name: {
 			type: 'string'
 		}
 	},
@@ -19,7 +22,7 @@ const loaderSchema = {
 function loader() {
 	const options = loaderUtils.getOptions(this);
 
-	validateOptions(loaderSchema, options, {
+	schemaUtils.validate(loaderSchema, options, {
 		baseDataPath: 'options',
 		name: 'Entry Wrapper Loader'
 	});
@@ -96,7 +99,7 @@ const pluginSchema = {
 
 class EntryWrapperPlugin {
 	constructor(options) {
-		validateOptions(pluginSchema, options, {
+		schemaUtils.validate(pluginSchema, options, {
 			baseDataPath: 'options',
 			name: 'Entry Wrapper Plugin'
 		});
