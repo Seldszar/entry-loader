@@ -49,9 +49,14 @@ export class EntryWrapperPlugin {
  */
 export interface EntryWrapperContext {
 	/**
-	 * The Webpack target.
+	 * The compiler target.
 	 */
 	target: string;
+
+	/**
+	 * The compiler name.
+	 */
+	name: string;
 }
 
 /**

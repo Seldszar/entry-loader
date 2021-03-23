@@ -26,7 +26,8 @@ function loader() {
 
 	const templatePath = path.resolve(this.rootContext, options.template);
 	const templateContext = {
-		target: this.target
+		target: this.target,
+		name: this.name
 	};
 
 	return `
