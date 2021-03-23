@@ -1,3 +1,5 @@
+import {Compiler} from 'webpack';
+
 /**
  * Entry wrapper options.
  */
@@ -28,9 +30,14 @@ export interface EntryWrapperPluginOptions extends EntryWrapperOptions {
 /**
  * Entry wrapper plugin.
  */
-export type EntryWrapperPlugin = {
-	new (options: EntryWrapperPluginOptions);
-};
+export class EntryWrapperPlugin {
+	constructor(options: EntryWrapperPluginOptions);
+
+	/**
+	 * Apply the plugin
+	 */
+	apply(compiler: Compiler): void;
+}
 
 /**
  * Entry wrapper context.
