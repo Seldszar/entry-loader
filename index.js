@@ -144,12 +144,12 @@ class EntryWrapperPlugin {
 
 		if (Array.isArray(entry)) {
 			for (let index = 0; index < entry.length; index++) {
-				entry[index] = this.updateEntry(entry[index]);
+				entry[index] = this.updateEntry(compiler, entry[index]);
 			}
 		} else if (typeof entry === 'object') {
 			for (const key in entry) {
 				if (Object.prototype.hasOwnProperty.call(entry, key)) {
-					entry[key] = this.updateEntry(entry[key]);
+					entry[key] = this.updateEntry(compiler, entry[key]);
 				}
 			}
 		}
