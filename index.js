@@ -147,9 +147,11 @@ class EntryWrapperPlugin {
 				entry[index] = this.updateEntry(compiler, entry[index]);
 			}
 		} else if (typeof entry === 'object') {
-			for (const key in entry) {
-				if (Object.prototype.hasOwnProperty.call(entry, key)) {
-					entry[key] = this.updateEntry(compiler, entry[key]);
+			if ('import' in entry) {
+				entry.import = this.updateEntry(compiler, entry.import);
+			} else {
+				for (const [key, value] of Object.entries(entry)) {
+					entry[key] = this.updateEntry(compiler, value);
 				}
 			}
 		}
